@@ -1,0 +1,164 @@
+
+/* ###################################################################
+**     Filename    : ProcessorExpert.c
+**     Project     : ProcessorExpert
+**     Processor   : MKL25Z128VLK4
+**     Version     : Driver 01.01
+**     Compiler    : GNU C Compiler
+**     Date/Time   : 2022-11-04, 14:10, # CodeGen: 0
+**     Abstract    :
+**         Main module.
+**         This module contains user's application code.
+**     Settings    :
+**     Contents    :
+**         No public methods
+**
+** ###################################################################*/
+/*!
+** @file ProcessorExpert.c
+** @version 01.01
+** @brief
+**         Main module.
+**         This module contains user's application code.
+*/         
+/*!
+**  @addtogroup ProcessorExpert_module ProcessorExpert module documentation
+**  @{
+*/         
+/* MODULE ProcessorExpert */
+
+
+/* Including needed modules to compile this module/procedure */
+#include "Cpu.h"
+#include "Events.h"
+#include "FRTOS1.h"
+#include "MCUC1.h"
+#include "UTIL1.h"
+#include "UTIL2.h"
+#include "ca.h"
+#include "BitsIoLdd1.h"
+#include "cc.h"
+#include "BitsIoLdd2.h"
+#include "ledcc.h"
+#include "BitsIoLdd3.h"
+#include "ledca.h"
+#include "BitsIoLdd4.h"
+#include "CsIO1.h"
+#include "IO1.h"
+/* Including shared modules, which are used for whole project */
+#include "PE_Types.h"
+#include "PE_Error.h"
+#include "PE_Const.h"
+#include "IO_Map.h"
+
+void task1();
+void task2();
+void task3();
+
+/* User includes (#include below this line is not maintained by Processor Expert) */
+void task1(){
+	int i;
+	
+		printf("entering task1\n");
+		for(i=0;i<=0x7ffff;i++);
+		
+		printf("exiting task1\n");
+		for(i=0;i<=0x7ffff;i++);
+		
+		xTaskCreate(task2,"task2",100,NULL,11,NULL);
+		
+		printf("Re-entering task1\n");
+		for(i=0;i<=0x7ffff;i++);
+				
+		printf("exiting task1\n");
+		for(i=0;i<=0x7ffff;i++);
+		
+		xTaskCreate(task3,"task3",100,NULL,12,NULL);
+		vTaskDelay(100);
+		
+		printf("Re-entering task1\n");
+		fflush(stdout);
+		for(i=0;i<=0x7ffff;i++);
+		
+		printf("exiting task1\n");
+		fflush(stdout);
+		for(i=0;i<=0x7ffff;i++);
+		
+		vTaskDelay(1000);
+}
+void task2(){
+			int i;
+			
+			cc_PutVal(0x40);
+			printf("entering task2\n");
+			
+			cc_PutVal(0x60);
+			printf("exiting task2\n");
+			
+			vTaskDelay(100);
+		
+			printf("entering task2\n");
+						
+			cc_PutVal(0x70);
+			printf("exiting task2\n");
+						
+			vTaskDelay(1000);
+}
+
+void task3(){
+	
+	int i; 
+	
+	ca_PutVal(0xDF);
+	printf("entering task3\n");
+				
+	ca_PutVal(0x9F);
+	printf("setting delay in task3\n");
+				
+	ca_PutVal(0x8F);
+	printf("exiting task3\n");
+							
+	vTaskDelay(1000);
+	
+}
+/*lint -save  -e970 Disable MISRA rule (6.3) checking. */
+int main(void)
+/*lint -restore Enable MISRA rule (6.3) checking. */
+{
+  /* Write your local variable definition here */
+
+  /*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
+  PE_low_level_init();
+  /*** End of Processor Expert internal initialization.                    ***/
+
+  /* Write your code here */
+  /* For example: for(;;) { } */
+ xTaskCreate(task1,"task1",100,NULL,10,NULL);
+ //xTaskCreate(task2,"task2",100,NULL,10,NULL);
+ //xTaskCreate(task3,"task3",100,NULL,10,NULL);
+//task1();
+//task2();
+//task3();
+  /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
+  /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
+  #ifdef PEX_RTOS_START
+    PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
+  #endif
+  /*** End of RTOS startup code.  ***/
+  /*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
+  for(;;){}
+  /*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
+} /*** End of main routine. DO NOT MODIFY THIS TEXT!!! ***/
+
+/* END ProcessorExpert */
+/*!
+** @}
+*/
+/*
+** ###################################################################
+**
+**     This file was created by Processor Expert 10.3 [05.08]
+**     for the Freescale Kinetis series of microcontrollers.
+**
+** ###################################################################
+*/
